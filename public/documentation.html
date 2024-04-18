@@ -3,25 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../css/styles.css">
     <title>Documentation</title>
 </head>
 <body>
     
     <h1>Movie API</h1>
 
-    <p>This movie API will: </p>
+    <p>This movie API's goals and functions will include:</p>
 
-    <ul>
-        <li>Return a list of ALL movies to the user</li>
-        <li>Return data about a single movie by title to the user</li>
-        <li>Return data about a genre by name/title</li>
-        <li>Return data about a director by name</li>
-        <li>Allow new users to register</li>
-        <li>Allow users to update their user info</li>
-        <li>Allow users to add a movie to their list of favorites</li>
-        <li>Allow users to remove a movie from their list of favorites</li>
-        <li>Allow existing users to deregister</li>
-    </ul>
+    <table class="doc-table">
+        <thead>
+            <tr class="odd-row">
+                <th>Business Logic</th>
+                <th>URL</th>
+                <th>HTTP Method</th>
+                <th>Request body data format</th>
+                <th>Response body data format</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="even-row">
+                <td>Return a list of ALL movies to the user</td>
+                <td>/movies</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON object holding data about all movies.</td>
+            </tr>
+            <tr class="odd-row">
+                <td>Return data about a single movie by title to the user</td>
+                <td>/movies/[Title]</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON object holding data about a single movie. Example: <br>
+                    <code>
+                        { <br>
+                            "title": "The Lord of the Rings: The Fellowship of the Ring", <br>
+                            "director": "Peter Jackson", <br>
+                            "genre": "Fantasy" <br>
+                        }
+                    </code>
+                </td>
+            </tr>
+            <tr class="even-row">
+                <td>Return data about a genre by name/title</td>
+                <td>/movies/genre/[Genre]</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON object holding data about movies in a specific genre. Example: <br>
+                    <code>
+                        { <br>
+                            "title": "The Lord of the Rings: The Fellowship of the Ring", <br>
+                            "director": "Peter Jackson", <br>
+                            "genre": "Fantasy" <br>
+                        }
+                    </code>
+                </td>
+            </tr>
+            <tr class="odd-row">
+                <td>Return data about a director by name</td>
+                <td>/movies/director/[Director's Name]</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON object holding movies from a specific director. Example: <br>
+                    <code>
+                        { <br>
+                            "title": "The Lord of the Rings: The Fellowship of the Ring", <br>
+                            "director": "Peter Jackson", <br>
+                            "genre": "Fantasy" <br>
+                        }
+                    </code>
+                </td>
+            </tr>
+            <tr class="even-row">
+                <td>Allow new users to register</td>
+                <td>/account</td>
+                <td>POST</td>
+                <td>A JSON object about the user being added. Example: <br>
+                    <code>
+                        { <br>
+                            "name": "Katie", <br>
+                            "email": "katie@gmail.com" <br>
+                        }
+                    </code>
+                </td>
+                <td>A JSON object holding data about the user that was added. Example: <br>
+                    <code>
+                        { <br>
+                            "id": "12345" <br>
+                            "name": "Katie", <br>
+                            "email": "katie@gmail.com" <br>
+                        }
+                    </code>
+                </td>
+            </tr>
+            <tr class="odd-row">
+                <td>Allow users to update their user info</td>
+                <td>/account/[ID]</td>
+                <td>PUT</td>
+                <td>A JSON object holding data that the user would like to change. Example: <br>
+                    <code>
+                        { <br>
+                            "name": "Judy" <br>
+                        }
+                    </code>
+                </td>
+                <td>A JSON object holding data about the user, including the change. Example: <br>
+                    <code>
+                        { <br>
+                            "id": "12345" <br>
+                            "name": "Judy", <br>
+                            "email": "katie@gmail.com" <br>
+                        }
+                    </code>
+                </td>
+            </tr>
+            <tr class="even-row">
+                <td>Allow users to add a movie to their list of favorites</td>
+                <td>/account/[ID]/favorites</td>
+                <td>POST</td>
+                <td>A JSON object with the movie information to be included. Example: <br>
+                    <code>
+                            "title": "Howl's Moving Castle"
+                    </code>
+                </td>
+                <td>A JSON object with the final list of favorites. Example: <br>
+                    <code>
+                        [{ <br>
+                            "title": "Howl's Moving Castle", <br>
+                            "director": "Hayao Miyazaki", <br>
+                            "genre": "Adventure" <br>
+                        }, <br>
+                        { <br>
+                            "title": "The Lord of the Rings: The Fellowship of the Ring", <br>
+                            "director": "Peter Jackson", <br>
+                            "genre": "Fantasy" <br>
+                        }]
+                    </code>
+                </td>
+            </tr>
+            <tr class="odd-row">
+                <td>Allow users to remove a movie from their list of favorites</td>
+                <td>/account/[ID]/favorites/[Movie]</td>
+                <td>DELETE</td>
+                <td>None</td>
+                <td>A JSON object with the final list of favorites. Example: <br>
+                    <code>
+                        { <br>
+                            "title": "Howl's Moving Castle", <br>
+                            "director": "Hayao Miyazaki", <br>
+                            "genre": "Adventure" <br>
+                        }
+                    </code>
+                </td>
+            </tr>
+            <tr class="even-row">
+                <td>Allow existing users to deregister</td>
+                <td>/account/[ID]</td>
+                <td>DELETE</td>
+                <td>None</td>
+                <td>A text message indicating whether the user was successfully removed</td>
+            </tr>
+        </tbody>
+    </table>
 
 </body>
 </html>
