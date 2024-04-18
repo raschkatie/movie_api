@@ -2,53 +2,91 @@
 const express = require('express'),
     morgan = require('morgan'),
     fs = require('fs'),
-    path = require('path');
+    path = require('path'),
+    bodyParser = require('body-parser'),
+    uuid = require('uuid');
 
 const app = express();
+
+app.use(bodyParser.json());
 
 // create write stream, then append to log.txt
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'});
 
+// create in-memory array
 let topMovies = [
     {
     title: 'Lord of the Rings: Fellowship of the Ring',
-    director: 'Peter Jackson'
+    director: 'Peter Jackson',
+    genre: 'Fantasy'
     },
     {
     title: 'It Follows',
-    director: 'David Robert Mitchell'
+    director: 'David Robert Mitchell',
+    genre: 'Horror'
     },
     {
     title: 'Harry Potter and the Chamber of Secrets',
-    director: 'Chris Columbus'
+    director: 'Chris Columbus',
+    genre: 'Fantasy'
     },
     {
     title: 'The Lighthouse',
-    director: 'Robert Eggers'
+    director: 'Robert Eggers',
+    genre: 'Horror'
     },
     {
     title: '1408',
-    director: 'Mikael Håfström'
+    director: 'Mikael Håfström',
+    genre: 'Horror'
     },
     {
-    title: 'IT (2017)',
-    director: 'Andrés Muschietti'
+    title: 'Howl\'s Moving Castle',
+    director: 'Hayao Miyazaki',
+    genre: 'Adventure'
     },
     {
     title: 'The Shining',
-    director: 'Stanley Kubrick'
+    director: 'Stanley Kubrick',
+    genre: 'Horror'
     },
     {
     title: 'Interstellar',
-    director: 'Christopher Nolan'
+    director: 'Christopher Nolan',
+    genre: 'Sci-Fi'
     },
     {
     title: 'How to Train Your Dragon',
-    director: 'Dean DeBlois'
+    director: 'Dean DeBlois',
+    genre: 'Adventure'
     },
     {
     title: 'The Conjuring',
-    director: 'James Wan'
+    director: 'James Wan',
+    genre: 'Horror'
+    }
+]
+
+let users = [
+    {
+        id: 40,
+        name: 'John Doe',
+        email: 'john@gmail.com',
+        favorites: [{
+            title: 'Lord of the Rings: Fellowship of the Ring',
+            director: 'Peter Jackson',
+            genre: 'Fantasy'
+            },
+            {
+            title: 'It Follows',
+            director: 'David Robert Mitchell',
+            genre: 'Horror'
+            }]
+    },
+    {
+        id: 41,
+        name: 'Jane Doe',
+        email: 'jane@hotmail.com'
     }
 ]
 
