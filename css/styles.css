@@ -1,0 +1,25 @@
+body {
+    margin: 30px;
+}
+
+.doc-table {
+    border: 1px solid black;
+}
+
+.odd-row {
+    background-color: lightgray;
+}
+
+.even-row {
+    background-color: #f8f8f8;
+}
+
+th, td {
+    margin: 0 auto;
+    width: 250px;
+    padding: 7px 14px;
+}
+
+code {
+    color: darkcyan;
+}
