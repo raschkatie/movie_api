@@ -38,59 +38,167 @@ app.get('/', (req, res) => {
 
 // Return a list of ALL movies to the user
 app.get('/movies', (req, res) => {
-    res.status(200).json(topMovies);
-
+    Movies.find()
+        .then((movies) => {
+            res.status(201).json(movies);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
 });
 
 // Return data about a single movie by title to the user
-app.get('/movies/:title', (req, res) => {
-    res.json(topMovies.find((movie) => {
-        return movie.title === req.params.title
-    }));
-
+app.get('/movies/:Title', (req, res) => {
+    Movies.findOne({ Title: req.params.Title })
+        .then((movie) => {
+            res.json(movie);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
 });
 
 // Return data about a genre by name/title
-app.get('/movies/genre/:genre', (req, res) => {
-    res.send('Successful GET request returning data of genre');
+app.get('/movies/genre/:Name', (req, res) => {
+    Genres.findOne({ Name: req.params.Name })
+        .then((genre) => {
+            res.json(genre);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
 });
 
 // Return data about a director by name
-app.get('/movies/director/:director', (req, res) => {
-    res.send('Successful GET request returning data of director');
+app.get('/movies/director/:Name', (req, res) => {
+    Directors.findOne({ Name: req.params.Name })
+        .then((director) => {
+            res.json(director);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
 });
 
 // Allow new users to register
-app.post('/account', (req, res) => {
-    let newUser = req.body;
+app.post('/account', async (req, res) => {
+    await Users.findOne({ Username: req.body.Username })  // Mongoose command
+    .then((user) => {  // promise
+        if (user) {
+            return res.status(400).send(req.body.Username + ' already exists');
+        } else {
+            Users
+                .create({
+                    Username: req.body.Username,
+                    Password: req.body.Password,
+                    Email: req.body.Email,
+                    Birthday: req.body.Birthday
+                })
+                .then((user) => {res.status(201).json(user) })  // callback funtion w/in promise
+            .catch((err) => {
+                console.error(err);
+                res.status(500).send('Error: ' + err);
+            });
+        }
+    })
+    .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+    });
+});
 
-    if (!newUser.name) {
-        res.status(400).send('Missing name. Please provide name in request body.');
-    } else {
-        newUser.id = uuid.v4();
-        users.push(newUser);
-        res.status(201).send(newUser);
-    }
+// GET all users
+app.get('/account', async (req, res) => {
+    await Users.find()
+        .then((users) => {
+            res.status(201).json(users);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
+});
+
+// GET a user by username
+app.get('/account/:Username', async (req, res) => {
+    await Users.findOne({ Username: req.params.Username })
+        .then((user) => {
+            res.json(user);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
 });
 
 // Allow users to update their user info
-app.put('/account/:id', (req, res) => {
-    res.send('Successful attempt to update user info');
+app.put('/account/:Username', async (req, res) => {
+    await Users.findOneAndUpdate({ Username: req.params.Username }, { $set:
+        {
+            Username: req.body.Username,
+            Password: req.body.Password,
+            Email: req.body.Email,
+            Birthday: req.body.Birthday
+        }
+    },
+    { new: true })  // ensures doc is returned
+    .then((updatedUser) => {
+        res.json(updatedUser);
+    })
+    .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+    });
 });
 
 // Allow users to add a movie to their list of favorites
-app.post('/account/:id/favorites', (req, res) => {
-    res.send('Movie added to user Favorites');
+app.post('/account/:Username/favorites/:MovieID', async (req, res) => {
+    await Users.findOneAndUpdate({ Username: req.params.Username }, {
+        $push: { FavoriteMovies: req.params.MovieID }
+    },
+    { new: true })
+    .then((updatedUser) => {
+        res.json(updatedUser);
+    })
+    .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+    });
 });
 
 // Allow users to remove a movie from their list of favorites
-app.delete('/account/:id/favorites/:title', (req, res) => {
-    res.send('Movie successfully deleted from Favorites');
+app.delete('/account/:Username/favorites/:MovieID', async (req, res) => {
+    await Users.findOneAndUpdate({ Username: req.params.Username }, {
+        $pull: { FavoriteMovies: req.params.MovieID }
+    },
+    { new: true })
+    .then((updatedUser) => {
+        res.json(updatedUser);
+    })
+    .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+    });
 });
 
 // Allow existing users to deregister
-app.delete('/account/:id', (req, res) => {
-    res.send('User info successfully removed. You are deregistered');
+app.delete('/account/:Username', async (req, res) => {
+    await Users.findOneAndDelete({ Username: req.params.Username })
+        .then((user) => {
+            if (!user) {
+                res.status(400).send(req.params.Username + ' was not found');
+            } else {
+                res.status(200).send(req.params.Username + ' was deleted.');
+            }
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
 });
 
 // Create an error-handling middleware function that will log all application-level errors to the terminal
