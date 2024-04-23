@@ -1,14 +1,25 @@
-// require express in your “index.js” file
+// requiring all modules
+const { resolveSoa } = require('dns');
 const express = require('express'),
     morgan = require('morgan'),
     fs = require('fs'),
     path = require('path'),
-    bodyParser = require('body-parser'),
-    uuid = require('uuid');
+    uuid = require('uuid'),
+    mongoose = require('mongoose'),
+    Models = require('./models.js');
 
+// import models from models.js file
+const Movies = Models.Movie;
+const Users = Models.User;
+const Genres = Models.Genre;
+const Directors = Models.Director;
 const app = express();
 
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// connect Mongoose with db to perform CRUD operations
+mongoose.connect('mongodb://localhost:27017/test', { useNewUrlParser: true, useUnifiedTopology: true });
 
 // create write stream, then append to log.txt
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'});
