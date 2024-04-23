@@ -28,7 +28,21 @@
                 <td>/movies</td>
                 <td>GET</td>
                 <td>None</td>
-                <td>A JSON object holding data about all movies.</td>
+                <td>A JSON object holding data about all movies. Example: <br>
+                    <code>
+                        { <br>
+                            "Title": "The Lord of the Rings: The Fellowship of the Ring", <br>
+                            "Director": "6626bceaaf9c355c6d117b7c", <br>
+                            "Genre": "6626c157af9c355c6d117b85" <br>
+                        }, <br>
+                        { <br>
+                            "Title": "Interstellar", <br>
+                            "Director": "6626bdeeaf9c355c6d117b7e", <br>
+                            "Genre": "6626c17aaf9c355c6d117b87" <br>
+                        }, <br>
+
+                    </code>
+                </td>
             </tr>
             <tr class="odd-row">
                 <td>Return data about a single movie by title to the user</td>
@@ -38,9 +52,9 @@
                 <td>A JSON object holding data about a single movie. Example: <br>
                     <code>
                         { <br>
-                            "title": "The Lord of the Rings: The Fellowship of the Ring", <br>
-                            "director": "Peter Jackson", <br>
-                            "genre": "Fantasy" <br>
+                            "Title": "The Lord of the Rings: The Fellowship of the Ring", <br>
+                            "Director": "6626bceaaf9c355c6d117b7c", <br>
+                            "Genre": "6626c157af9c355c6d117b85" <br>
                         }
                     </code>
                 </td>
@@ -50,12 +64,12 @@
                 <td>/movies/genre/[Genre]</td>
                 <td>GET</td>
                 <td>None</td>
-                <td>A JSON object holding data about movies in a specific genre. Example: <br>
+                <td>A JSON object holding data about a specific genre. Example: <br>
                     <code>
                         { <br>
-                            "title": "The Lord of the Rings: The Fellowship of the Ring", <br>
-                            "director": "Peter Jackson", <br>
-                            "genre": "Fantasy" <br>
+                            "_id": "6626c194af9c355c6d117b88", <br>
+                            "Name": "Horror", <br>
+                            "Description": "Horror is a genre of fiction that is intended to disturb, frighten or scare." <br>
                         }
                     </code>
                 </td>
@@ -65,12 +79,13 @@
                 <td>/movies/director/[Director's Name]</td>
                 <td>GET</td>
                 <td>None</td>
-                <td>A JSON object holding movies from a specific director. Example: <br>
+                <td>A JSON object holding information about a specific director. Example: <br>
                     <code>
                         { <br>
-                            "title": "The Lord of the Rings: The Fellowship of the Ring", <br>
-                            "director": "Peter Jackson", <br>
-                            "genre": "Fantasy" <br>
+                            "_id": "6626bceaaf9c355c6d117b7c", <br>
+                            "Name": "Peter Jackson", <br>
+                            "Bio": "Sir Peter Jackson made history with The Lord of the Rings trilogy, becoming the first person to direct three major feature films simultaneously.", <br>
+                            "Birth": "1961" <br>
                         }
                     </code>
                 </td>
@@ -82,77 +97,133 @@
                 <td>A JSON object about the user being added. Example: <br>
                     <code>
                         { <br>
-                            "name": "Katie", <br>
-                            "email": "katie@gmail.com" <br>
+                            "Username": "Katie", <br>
+                            "Password": "supersecure", <br>
+                            "Email": "katie@gmail.com", <br>
+                            "Birthday": "1990-12-14" <br>
                         }
                     </code>
                 </td>
                 <td>A JSON object holding data about the user that was added. Example: <br>
                     <code>
                         { <br>
+                            "Username": "Katie", <br>
+                            "Password": "supersecure", <br>
+                            "Email": "katie@gmail.com", <br>
+                            "Birthday": "1990-12-14", <br>
                             "id": "12345" <br>
-                            "name": "Katie", <br>
-                            "email": "katie@gmail.com" <br>
+                        }
+                    </code>
+                </td>
+            </tr>
+            <tr class="odd-row">
+                <td>Return a list of all users</td>
+                <td>/account</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON object holding a list of all users. Example: <br>
+                    <code>
+                        [ <br>
+                        { <br>
+                            "_id": "6626d04ce4afba14de117b7b", <br>
+                            "Name": "John Doe", <br>
+                            "Birthday": "1986-12-12T00:00:00.000Z", <br>
+                            "Email": "johndoe@gmail.com", <br>
+                            "FavoriteMovies": [ <br>
+                                "6626c567a406dc428b117b7c", <br>
+                                "6626c577a406dc428b117b7d", <br>
+                                "6626c75403169fdf54117b7d" <br>
+                            ], <br>
+                            "Username": "johndoe", <br>
+                            "Password": "securepass123" <br>
+                        }, <br>
+                        { <br>
+                            "_id": "6626d12be4afba14de117b7c", <br>
+                            "Name": "Jane Doe", <br>
+                            "Birthday": "1974-04-06T00:00:00.000Z", <br>
+                            "FavoriteMovies": [ <br>
+                                "6626c73603169fdf54117b7b", <br>
+                                "6626c76303169fdf54117b7e" <br>
+                            ], <br>
+                            "Username": "doe_jane1", <br>
+                            "Password": "test190" <br>
+                        } <br>
+                        ]
+                    </code>
+                </td>
+            </tr>
+            <tr class="even-row">
+                <td>Return information about a single user</td>
+                <td>/account/[Username]</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON object holding data about the user. Example: <br>
+                    <code>
+                        { <br>
+                            "Username": "Katie", <br>
+                            "Password": "supersecure", <br>
+                            "Email": "katie@gmail.com", <br>
+                            "Birthday": "1990-12-14", <br>
+                            "id": "12345" <br>
                         }
                     </code>
                 </td>
             </tr>
             <tr class="odd-row">
                 <td>Allow users to update their user info</td>
-                <td>/account/[ID]</td>
+                <td>/account/[Username]</td>
                 <td>PUT</td>
                 <td>A JSON object holding data that the user would like to change. Example: <br>
                     <code>
                         { <br>
-                            "name": "Judy" <br>
+                            "Username": "Judy" <br>
                         }
                     </code>
                 </td>
                 <td>A JSON object holding data about the user, including the change. Example: <br>
                     <code>
                         { <br>
+                            "Username": "Judy", <br>
+                            "Password": "supersecure", <br>
+                            "Email": "katie@gmail.com", <br>
+                            "Birthday": "1990-12-14", <br>
                             "id": "12345" <br>
-                            "name": "Judy", <br>
-                            "email": "katie@gmail.com" <br>
                         }
                     </code>
                 </td>
             </tr>
             <tr class="even-row">
                 <td>Allow users to add a movie to their list of favorites</td>
-                <td>/account/[ID]/favorites</td>
+                <td>/account/[Username]/favorites/[Movie ID]</td>
                 <td>POST</td>
-                <td>A JSON object with the movie information to be included. Example: <br>
+                <td>None</td>
+                <td>A JSON object holding data about the user, including the updated movie list. Example: <br>
                     <code>
-                            "title": "Howl's Moving Castle"
-                    </code>
-                </td>
-                <td>A JSON object with the final list of favorites. Example: <br>
-                    <code>
-                        [{ <br>
-                            "title": "Howl's Moving Castle", <br>
-                            "director": "Hayao Miyazaki", <br>
-                            "genre": "Adventure" <br>
-                        }, <br>
                         { <br>
-                            "title": "The Lord of the Rings: The Fellowship of the Ring", <br>
-                            "director": "Peter Jackson", <br>
-                            "genre": "Fantasy" <br>
-                        }]
+                            "Username": "Katie", <br>
+                            "Password": "supersecure", <br>
+                            "Email": "katie@gmail.com", <br>
+                            "Birthday": "1990-12-14", <br>
+                            "id": "12345", <br>
+                            "FavoriteMovies": ["6626c559a406dc428b117b7b", "6626c567a406dc428b117b7c"]
+                        }
                     </code>
                 </td>
             </tr>
             <tr class="odd-row">
                 <td>Allow users to remove a movie from their list of favorites</td>
-                <td>/account/[ID]/favorites/[Movie]</td>
+                <td>/account/[ID]/favorites/[Movie ID]</td>
                 <td>DELETE</td>
                 <td>None</td>
-                <td>A JSON object with the final list of favorites. Example: <br>
+                <td>A JSON object holding data about the user, including the updated movie list. Example: <br>
                     <code>
                         { <br>
-                            "title": "Howl's Moving Castle", <br>
-                            "director": "Hayao Miyazaki", <br>
-                            "genre": "Adventure" <br>
+                            "Username": "Katie", <br>
+                            "Password": "supersecure", <br>
+                            "Email": "katie@gmail.com", <br>
+                            "Birthday": "1990-12-14", <br>
+                            "id": "12345", <br>
+                            "FavoriteMovies": ["6626c559a406dc428b117b7b"]
                         }
                     </code>
                 </td>
@@ -162,7 +233,7 @@
                 <td>/account/[ID]</td>
                 <td>DELETE</td>
                 <td>None</td>
-                <td>A text message indicating whether the user was successfully removed</td>
+                <td>A text message indicating whether the user was successfully removed.</td>
             </tr>
         </tbody>
     </table>
