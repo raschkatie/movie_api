@@ -117,6 +117,45 @@
                 </td>
             </tr>
             <tr class="odd-row">
+                <td>Allow users to log in</td>
+                <td>/login</td>
+                <td>POST</td>
+                <td>Key-Value pairs in Parameters or the Body with the user's login information. Example: <br>
+                    <code>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Key</th>
+                                    <th>Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Username</td>
+                                    <td>placeholder_name</td>
+                                </tr>
+                                <tr>
+                                    <td>Password</td>
+                                    <td>examplepassword</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </code>
+                </td>
+                <td>A JSON object holding data about the user, including the JWT token. Example: <br>
+                    <code>
+                        { <br>
+                            "Username": "Katie", <br>
+                            "Password": "supersecure", <br>
+                            "Email": "katie@gmail.com", <br>
+                            "Birthday": "1990-12-14", <br>
+                            "id": "12345" <br>
+                        } <br>
+                        "token": "123456789"
+                    </code>
+                </td>
+            </tr>
+            <tr class="even-row">
                 <td>Return a list of all users</td>
                 <td>/account</td>
                 <td>GET</td>
@@ -152,7 +191,7 @@
                     </code>
                 </td>
             </tr>
-            <tr class="even-row">
+            <tr class="odd-row">
                 <td>Return information about a single user</td>
                 <td>/account/[Username]</td>
                 <td>GET</td>
@@ -169,7 +208,7 @@
                     </code>
                 </td>
             </tr>
-            <tr class="odd-row">
+            <tr class="even-row">
                 <td>Allow users to update their user info</td>
                 <td>/account/[Username]</td>
                 <td>PUT</td>
@@ -192,7 +231,7 @@
                     </code>
                 </td>
             </tr>
-            <tr class="even-row">
+            <tr class="odd-row">
                 <td>Allow users to add a movie to their list of favorites</td>
                 <td>/account/[Username]/favorites/[Movie ID]</td>
                 <td>POST</td>
@@ -210,7 +249,7 @@
                     </code>
                 </td>
             </tr>
-            <tr class="odd-row">
+            <tr class="even-row">
                 <td>Allow users to remove a movie from their list of favorites</td>
                 <td>/account/[ID]/favorites/[Movie ID]</td>
                 <td>DELETE</td>
@@ -228,7 +267,7 @@
                     </code>
                 </td>
             </tr>
-            <tr class="even-row">
+            <tr class="odd-row">
                 <td>Allow existing users to deregister</td>
                 <td>/account/[ID]</td>
                 <td>DELETE</td>
