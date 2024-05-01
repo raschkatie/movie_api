@@ -30,7 +30,12 @@ const passport = require('passport');
 require('./passport');
 
 // connect Mongoose with db to perform CRUD operations
-mongoose.connect('mongodb://localhost:27017/test', { useNewUrlParser: true, useUnifiedTopology: true });
+
+// LOCAL
+// mongoose.connect('mongodb://localhost:27017/test', { useNewUrlParser: true, useUnifiedTopology: true });
+
+// ONLINE
+mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // create write stream, then append to log.txt
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'});
