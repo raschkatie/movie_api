@@ -1,4 +1,4 @@
-const jwtSecret = 'your_jwt_secret';  // must be same key used in JWT Strategy in passport.js
+const jwtSecret = process.env.SECRET_KEY;  // must be same key used in JWT Strategy in passport.js
 
 const jwt = require('jsonwebtoken'),
     passport = require('passport');
