@@ -1,6 +1,10 @@
 # Movie API
 
-The public API can be found [here](https://kr-my-flix.onrender.com).
+A database of movies where users can create an account, update their account, or remove their account, and view movie data from the database such as the director or genre of a single movie.
+
+- The public API can be found [here](https://kr-my-flix.onrender.com).
+
+- Check out the detailed documentation and API endpoints [here](https://kr-my-flix.onrender.com/documentation.html).
 
 ## Project Goals
 
@@ -15,7 +19,3 @@ This project involves the creation of an API. The project will:
 - Allow users to add a movie to their list of favorites
 - Allow users to remove a movie from their list of favorites
 - Allow existing users to deregister
-
-### Further Information
-
-Specific requirements for each project goal can be found in the [documentation](https://kr-my-flix.onrender.com/documentation.html) page.
