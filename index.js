@@ -101,7 +101,7 @@ app.get('/movies/director/:Name', passport.authenticate('jwt', { session: false 
 });
 
 // Allow new users to register
-app.post('/account', async (req, res) => {
+app.post('/users', async (req, res) => {
     
     // validate new user information for security
     [
@@ -146,7 +146,7 @@ app.post('/account', async (req, res) => {
 });
 
 // GET all users
-app.get('/account', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.get('/users', passport.authenticate('jwt', { session: false }), async (req, res) => {
     await Users.find()
         .then((users) => {
             res.status(201).json(users);
@@ -158,7 +158,7 @@ app.get('/account', passport.authenticate('jwt', { session: false }), async (req
 });
 
 // GET a user by username
-app.get('/account/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.get('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
     await Users.findOne({ Username: req.params.Username })
         .then((user) => {
             res.json(user);
@@ -170,7 +170,7 @@ app.get('/account/:Username', passport.authenticate('jwt', { session: false }), 
 });
 
 // Allow users to update their user info
-app.put('/account/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.put('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
     // makes sure username matches the one in the request parameter
     if(req.user.Username !== req.params.Username){
         return res.status(400).send('Permission denied');
@@ -196,7 +196,7 @@ app.put('/account/:Username', passport.authenticate('jwt', { session: false }), 
 });
 
 // Allow users to add a movie to their list of favorites
-app.post('/account/:Username/favorites/:MovieID', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.post('/users/:Username/favorites/:MovieID', passport.authenticate('jwt', { session: false }), async (req, res) => {
     if(req.user.Username !== req.params.Username){
         return res.status(400).send('Permission denied');
     }
@@ -215,7 +215,7 @@ app.post('/account/:Username/favorites/:MovieID', passport.authenticate('jwt', {
 });
 
 // Allow users to remove a movie from their list of favorites
-app.delete('/account/:Username/favorites/:MovieID', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.delete('/users/:Username/favorites/:MovieID', passport.authenticate('jwt', { session: false }), async (req, res) => {
     if(req.user.Username !== req.params.Username){
         return res.status(400).send('Permission denied');
     }
@@ -234,7 +234,7 @@ app.delete('/account/:Username/favorites/:MovieID', passport.authenticate('jwt',
 });
 
 // Allow existing users to deregister
-app.delete('/account/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.delete('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
     if(req.user.Username !== req.params.Username){
         return res.status(400).send('Permission denied');
     }
