@@ -1,4 +1,3 @@
-// requiring all modules
 const { resolveSoa } = require('dns');
 const express = require('express'),
     morgan = require('morgan'),
@@ -8,7 +7,6 @@ const express = require('express'),
     mongoose = require('mongoose'),
     Models = require('./models.js');
 
-// import models from models.js file
 const Movies = Models.Movie;
 const Users = Models.User;
 const Genres = Models.Genre;
@@ -23,13 +21,10 @@ const { check, validationResult } = require('express-validator');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// import authentication js file (AFTER app.use for Express (& inherent bodyParser))
 let auth = require('./auth')(app);
 
 const passport = require('passport');
 require('./passport');
-
-// connect Mongoose with db to perform CRUD operations
 
 // LOCAL
 // mongoose.connect('mongodb://localhost:27017/test', { useNewUrlParser: true, useUnifiedTopology: true });
@@ -37,16 +32,12 @@ require('./passport');
 // ONLINE
 mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
-// create write stream, then append to log.txt
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'});
 
-// invoke middleware function
 app.use(morgan('combined', {stream: accessLogStream}));
 
-// Use express.static to serve your “documentation.html” file from the public folder
 app.use(express.static('public'));
 
-// Create another GET route located at the endpoint “/”
 app.get('/', (req, res) => {
     res.send('Welcome to MyFlix!');
 
@@ -56,7 +47,7 @@ app.get('/', (req, res) => {
 app.get('/movies', passport.authenticate('jwt', { session: false }), async (req, res) => {
     await Movies.find()
         .then((movies) => {
-            res.status(201).json(movies);
+            res.status(200).json(movies);
         })
         .catch((err) => {
             console.error(err);
@@ -102,8 +93,7 @@ app.get('/movies/director/:Name', passport.authenticate('jwt', { session: false 
 
 // Allow new users to register
 app.post('/users', async (req, res) => {
-    
-    // validate new user information for security
+
     [
         check('Username', 'Username is required').isLength({ min: 5 }),
         check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
@@ -111,7 +101,6 @@ app.post('/users', async (req, res) => {
         check('Email', 'Email does not appear to be valid.').isEmail()
     ], async (req, res) => {
 
-        // checking validation object for errors
         let errors = validationResult(req);
 
         if (!errors.isEmpty()) {
@@ -120,8 +109,8 @@ app.post('/users', async (req, res) => {
     }
     
     let hashedPassword = Users.hashPassword(req.body.Password);
-    await Users.findOne({ Username: req.body.Username })  // Mongoose command - seeing if username already exists
-    .then((user) => {  // promise
+    await Users.findOne({ Username: req.body.Username })
+    .then((user) => {
         if (user) {
             return res.status(400).send(req.body.Username + ' already exists');
         } else {
@@ -132,7 +121,7 @@ app.post('/users', async (req, res) => {
                     Email: req.body.Email,
                     Birthday: req.body.Birthday
                 })
-                .then((user) => {res.status(201).json(user) })  // callback funtion w/in promise
+                .then((user) => {res.status(201).json(user) })
             .catch((err) => {
                 console.error(err);
                 res.status(500).send('Error: ' + err);
@@ -149,7 +138,7 @@ app.post('/users', async (req, res) => {
 app.get('/users', passport.authenticate('jwt', { session: false }), async (req, res) => {
     await Users.find()
         .then((users) => {
-            res.status(201).json(users);
+            res.status(200).json(users);
         })
         .catch((err) => {
             console.error(err);
@@ -171,7 +160,6 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), as
 
 // Allow users to update their user info
 app.put('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    // makes sure username matches the one in the request parameter
     if(req.user.Username !== req.params.Username){
         return res.status(400).send('Permission denied');
     }
@@ -185,7 +173,7 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), as
             Birthday: req.body.Birthday
         }
     },
-    { new: true })  // ensures doc is returned
+    { new: true })
     .then((updatedUser) => {
         res.json(updatedUser);
     })
@@ -253,14 +241,11 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
         });
 });
 
-// Create an error-handling middleware function that will log all application-level errors to the terminal
-// should always be defined last in middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something broke!');
 });
 
-// listens for a response on user's port or port 8080
 const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0', () => {
     console.log('Listening on Port ' + port);
