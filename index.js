@@ -9,8 +9,6 @@ const express = require('express'),
 
 const Movies = Models.Movie;
 const Users = Models.User;
-const Genres = Models.Genre;
-const Directors = Models.Director;
 const app = express();
 
 const cors = require('cors');
@@ -68,8 +66,8 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), asyn
 });
 
 // Return data about a genre by name/title
-app.get('/movies/genre/:Name', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    Genres.findOne({ Name: req.params.Name })
+app.get('/movies/genre/:genreName', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    Genres.findOne({ 'Genre.Name': req.params.genreName })
         .then((genre) => {
             res.json(genre);
         })
@@ -80,8 +78,8 @@ app.get('/movies/genre/:Name', passport.authenticate('jwt', { session: false }),
 });
 
 // Return data about a director by name
-app.get('/movies/director/:Name', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    Directors.findOne({ Name: req.params.Name })
+app.get('/movies/director/:directorName', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    Directors.findOne({ 'Director.Name': req.params.Name })
         .then((director) => {
             res.json(director);
         })
