@@ -12,7 +12,7 @@ const Users = Models.User;
 const app = express();
 
 const cors = require('cors');
-let allowedOrigins = ['http://localhost:8080', 'http://localhost:1234', 'https://myflix-kr.netlify.app'];
+let allowedOrigins = ['http://localhost:8080', 'http://localhost:1234', 'https://myflix-kr.netlify.app', 'https://kr-my-flix.onrender.com'];
 
 app.use(cors({
     origin: (origin, callback) => {
