@@ -37,7 +37,7 @@ require('./passport');
 // mongoose.connect('mongodb://localhost:27017/test', { useNewUrlParser: true, useUnifiedTopology: true });
 
 // ONLINE
-mongoose.connect('mongodb://your-db-ec2-public-ip:27017/moviesDB', {
+mongoose.connect('mongodb://172.31.86.239:27017/moviesDB', {  // ** PRIVATE IP FOR CURRENT MONGO INSTANCE
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });  
